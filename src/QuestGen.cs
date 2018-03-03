@@ -25,6 +25,20 @@ namespace ProceduralQuestTest
     // --- a hammer or even a surgeon's scalpel might be "common", whereas adamantine or a miracle herb may be "exotic"
     // --- quests should only be given for uncommon or even rare items, unless the demand is urgent.
 
+    // QuestNodeTarget types
+    // - target - general, any kind of target
+    // - person - a sapient creature of any kind - a human, a dragon, a golem, an magical floating cloud, ...
+    // - possession - anything a person may carry on themselves, ie either item or knowledge
+    // - item - a physical, tangible thing
+    // - knowledge - knowledge of any sort - information on the location of someone or something, knowhow on how to do something, etc.
+
+    // QuestNodeGoals
+
+    // - GET target FROM person
+    // --- basically just get something from them for free (if friendly)
+    // - EXCHANGE target1 FOR target2 WITH person
+    // - DESTROY target
+
     // -----
     class QuestGen
     {
