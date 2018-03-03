@@ -43,15 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NameComposer.cs" />
-    <Compile Include="PRNG.cs" />
-    <Compile Include="Quest.cs" />
-    <Compile Include="QuestGen.cs" />
+    <Compile Include="src\NameComposer.cs" />
+    <Compile Include="src\PRNG.cs" />
+    <Compile Include="src\Quest.cs" />
+    <Compile Include="src\QuestGen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuestInfoPosition.cs" />
-    <Compile Include="QuestNode.cs" />
-    <Compile Include="QuestNodeGoal.cs" />
-    <Compile Include="QuestNodeTarget.cs" />
+    <Compile Include="src\QuestInfoPosition.cs" />
+    <Compile Include="src\QuestNode.cs" />
+    <Compile Include="src\QuestNodeGoal.cs" />
+    <Compile Include="src\QuestNodeTarget.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

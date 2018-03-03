@@ -34,9 +34,9 @@ namespace ProceduralQuestTest
 
     // QuestNodeGoals
 
-    // - GET target FROM person
+    // - GET possession FROM person
     // --- basically just get something from them for free (if friendly)
-    // - EXCHANGE target1 FOR target2 WITH person
+    // - EXCHANGE possession1 FOR possession2 WITH person
     // - DESTROY target
 
     // -----
