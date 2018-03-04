@@ -8,18 +8,23 @@ namespace ProceduralQuestTest
 {
     public class Quest
     {
-        List<QuestNode> nodes;
+        public List<QuestNode> nodes;
+        public QuestNode firstNode;
 
         public Quest(List<QuestNode> initialNodes)
         {
             this.nodes = initialNodes;
         }
 
+        public Quest() {
+            this.nodes = new List<QuestNode>();
+        }
+
         public string GetString()
         {
             string result = "";
 
-            for (int i = 0; i < nodes.Count; i++)
+            /*for (int i = 0; i < nodes.Count; i++)
             {
                 result += "\n" + nodes[i].GetString();
 
@@ -27,9 +32,28 @@ namespace ProceduralQuestTest
                 {
                     result += "\n";
                 }
+            }*/
+
+            QuestNode currentNode = firstNode;
+
+            while (currentNode != null)
+            {
+                result += "\n" + currentNode.GetString() + "\n";
+
+                currentNode = currentNode.nextNode;
             }
 
             return result;
+        }
+
+        public void AddNode(QuestNode node)
+        {
+            nodes.Add(node);
+
+            if (firstNode == null)
+            {
+                firstNode = node;
+            }
         }
     }
 }

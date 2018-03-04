@@ -11,6 +11,9 @@ namespace ProceduralQuestTest
         public string nodeName;
         public QuestNodeGoal goal;
 
+        public QuestNode previousNode;
+        public QuestNode nextNode;
+
         public QuestNode(string nodeName, QuestNodeGoal goal)
         {
             this.nodeName = nodeName;

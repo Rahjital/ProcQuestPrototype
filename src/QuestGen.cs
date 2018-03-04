@@ -33,18 +33,23 @@ namespace ProceduralQuestTest
     // - knowledge - knowledge of any sort - information on the location of someone or something, knowhow on how to do something, etc.
 
     // QuestNodeGoals
-
     // - GET possession FROM person
     // --- basically just get something from them for free (if friendly)
-    // - EXCHANGE possession1 FOR possession2 WITH person
+    // - EXCHANGE possession1 FOR possession2
     // - DESTROY target
+    // - DELIVER possession
+
+    // New Quest Node addition kinds
+    // - add unaffiliated - 
+    // - add related -
+    // - replace self -
 
     // -----
     class QuestGen
     {
         static void Main(string[] args)
         {
-            List<QuestNode> questNodes = new List<QuestNode>();
+            Quest quest = new Quest();
 
             QuestInfoPositionLocation itemOwnerLocation = new QuestInfoPositionLocation(NameComposer.ComposeName(3, 9));
 
@@ -55,7 +60,7 @@ namespace ProceduralQuestTest
             QuestNodeGoalGet getItemGoal = new QuestNodeGoalGet(getItemTarget);
             QuestNode getItemNode = new QuestNode("startNode", getItemGoal);
 
-            questNodes.Add(getItemNode);
+            quest.AddNode(getItemNode);
 
             QuestInfoPositionLocation questGiverLocation = new QuestInfoPositionLocation(NameComposer.ComposeName(3, 9));
             questGiverLocation.knowledge = "known_always";
@@ -64,9 +69,9 @@ namespace ProceduralQuestTest
             QuestNodeGoalGive giveItemGoal = new QuestNodeGoalGive(getItemTarget, questGiverPerson);
             QuestNode deliverItemNode = new QuestNode("endNode", giveItemGoal);
 
-            questNodes.Add(deliverItemNode);
-
-            Quest quest = new Quest(questNodes);
+            getItemNode.nextNode = deliverItemNode;
+            deliverItemNode.previousNode = getItemNode;
+            quest.AddNode(deliverItemNode);
 
             using (StreamWriter stream = new StreamWriter("questTest.txt"))
             {

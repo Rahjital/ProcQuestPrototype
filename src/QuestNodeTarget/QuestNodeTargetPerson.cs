@@ -6,42 +6,6 @@ using System.Threading.Tasks;
 
 namespace ProceduralQuestTest
 {
-    public abstract class QuestNodeTarget
-    {
-        public abstract string GetString();
-        public abstract string GetStringShort();
-
-        public abstract QuestNodeGoal GetExtenstionGoal();
-        public bool extensionAvailable = true;
-    }
-
-    public class QuestNodeTargetItem : QuestNodeTarget
-    {
-        public string name;
-        public QuestInfoPosition position;
-
-        public QuestNodeTargetItem(string name, QuestInfoPosition position)
-        {
-            this.name = name;
-            this.position = position;
-        }
-
-        public override string GetString()
-        {
-            return String.Format("ITEM {0}\n--- position: {1}", name, position.GetString());
-        }
-
-        public override string GetStringShort()
-        {
-            return String.Format("ITEM {0} ({1})", name, position.GetString());
-        }
-
-        public override QuestNodeGoal GetExtenstionGoal()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class QuestNodeTargetPerson : QuestNodeTarget
     {
         public string name;

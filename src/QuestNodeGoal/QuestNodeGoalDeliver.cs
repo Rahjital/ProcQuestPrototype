@@ -6,32 +6,6 @@ using System.Threading.Tasks;
 
 namespace ProceduralQuestTest
 {
-    public abstract class QuestNodeGoal
-    {
-        public abstract string GetString();
-        public abstract QuestNodeTarget GetSingleTarget();
-    }
-
-    public class QuestNodeGoalGet : QuestNodeGoal
-    {
-        public QuestNodeTarget target;
-
-        public QuestNodeGoalGet(QuestNodeTarget target)
-        {
-            this.target = target;
-        }
-
-        public override string GetString()
-        {
-            return String.Format("GET\n{0}", target.GetString());
-        }
-
-        public override QuestNodeTarget GetSingleTarget()
-        {
-            return target;
-        }
-    }
-
     public class QuestNodeGoalGive : QuestNodeGoal
     {
         public QuestNodeTarget target;
