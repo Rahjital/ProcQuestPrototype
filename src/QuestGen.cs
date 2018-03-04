@@ -53,7 +53,7 @@ namespace ProceduralQuestTest
 
             QuestInfoPositionLocation itemOwnerLocation = new QuestInfoPositionLocation(NameComposer.ComposeName(3, 9));
 
-            QuestNodeTargetPerson itemOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "hostile", itemOwnerLocation);
+            QuestNodeTargetPerson itemOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", itemOwnerLocation);
 
             QuestInfoPositionPossessed itemLocation = new QuestInfoPositionPossessed(itemOwner);
             QuestNodeTargetItem getItemTarget = new QuestNodeTargetItem("Dancing Dragon sword", itemLocation);
@@ -66,12 +66,15 @@ namespace ProceduralQuestTest
             questGiverLocation.knowledge = "known_always";
 
             QuestNodeTargetPerson questGiverPerson = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "friendly", questGiverLocation);
-            QuestNodeGoalGive giveItemGoal = new QuestNodeGoalGive(getItemTarget, questGiverPerson);
+            QuestNodeGoalDeliver giveItemGoal = new QuestNodeGoalDeliver(getItemTarget, questGiverPerson);
             QuestNode deliverItemNode = new QuestNode("endNode", giveItemGoal);
 
             getItemNode.nextNode = deliverItemNode;
             deliverItemNode.previousNode = getItemNode;
             quest.AddNode(deliverItemNode);
+
+            deliverItemNode.CreateExpansionNode();
+            getItemNode.CreateExpansionNode();
 
             using (StreamWriter stream = new StreamWriter("questTest.txt"))
             {

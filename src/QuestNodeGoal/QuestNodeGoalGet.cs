@@ -8,9 +8,9 @@ namespace ProceduralQuestTest
 {
     public class QuestNodeGoalGet : QuestNodeGoal
     {
-        public QuestNodeTarget target;
+        public QuestNodeTargetItem target;
 
-        public QuestNodeGoalGet(QuestNodeTarget target)
+        public QuestNodeGoalGet(QuestNodeTargetItem target)
         {
             this.target = target;
         }
@@ -20,9 +20,35 @@ namespace ProceduralQuestTest
             return String.Format("GET\n{0}", target.GetString());
         }
 
-        public override QuestNodeTarget GetSingleTarget()
+        public override bool NewExpansionGoal(out QuestNodeGoal newNodeGoal)
         {
-            return target;
+            QuestNodeGoalExchange newExchangeGoal = new QuestNodeGoalExchange();
+
+            newExchangeGoal.reward = target;
+
+            if (target.position is QuestInfoPositionPossessed)
+            {
+                QuestInfoPositionPossessed ownerInfo = (QuestInfoPositionPossessed)target.position;
+
+                newExchangeGoal.rewardGiver = ownerInfo.owner;
+            }
+            else if (target.position is QuestInfoPositionLocation)
+            {
+                QuestNodeTargetPerson newOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", (QuestInfoPositionLocation)target.position);
+            }
+            else
+            {
+                throw new ArgumentException("QuestNodeGoalGet NewExpansionGoal - unknown QuestInfoPosition type");
+            }
+
+            newNodeGoal = newExchangeGoal;
+
+            parentNode.goal = newNodeGoal;
+            newNodeGoal.parentNode = parentNode;
+
+            newNodeGoal.LateInitialisation();
+
+            return false;
         }
     }
 }

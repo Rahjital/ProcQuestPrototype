@@ -49,11 +49,17 @@ namespace ProceduralQuestTest
         public void AddNode(QuestNode node)
         {
             nodes.Add(node);
+            node.quest = this;
 
             if (firstNode == null)
             {
                 firstNode = node;
             }
+        }
+
+        public string GetNextNodeName()
+        {
+            return "node" + (nodes.Count + 1);
         }
     }
 }

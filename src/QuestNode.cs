@@ -14,10 +14,18 @@ namespace ProceduralQuestTest
         public QuestNode previousNode;
         public QuestNode nextNode;
 
+        public Quest quest;
+
         public QuestNode(string nodeName, QuestNodeGoal goal)
         {
             this.nodeName = nodeName;
             this.goal = goal;
+            this.goal.parentNode = this;
+        }
+
+        public QuestNode(string nodeName)
+        {
+            this.nodeName = nodeName;
         }
 
         public string GetString()
@@ -25,13 +33,9 @@ namespace ProceduralQuestTest
             return String.Format("= Node {0} =\n{1}", nodeName, goal.GetString());
         }
 
-        public QuestNode GetNodeToInsertBefore()
+        public void CreateExpansionNode()
         {
-            QuestNodeTarget target = goal.GetSingleTarget();
-
-            QuestNode newNode = new QuestNode("node", null);
-
-            return newNode;
+            goal.CreateExpansionNode();
         }
     }
 }
