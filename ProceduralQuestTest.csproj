@@ -43,11 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Log.cs" />
     <Compile Include="src\QuestInfo\QuestInfoPosition.cs" />
-    <Compile Include="src\QuestInfo\QuestInfoPositionLocation.cs" />
-    <Compile Include="src\QuestInfo\QuestInfoPositionPossessed.cs" />
     <Compile Include="src\QuestNodeGoal\QuestNodeGoalAmbush.cs" />
     <Compile Include="src\QuestNodeGoal\QuestNodeGoalExchange.cs" />
+    <Compile Include="src\QuestNodeTarget\QuestNodeTargetInformation.cs" />
+    <Compile Include="src\QuestNodeTarget\QuestNodeTargetLocation.cs" />
+    <Compile Include="src\QuestNodeTarget\QuestNodeTargetPossesable.cs" />
     <Compile Include="src\QuestNodeTarget\QuestNodeTargetPerson.cs" />
     <Compile Include="src\NameComposer.cs" />
     <Compile Include="src\PRNG.cs" />

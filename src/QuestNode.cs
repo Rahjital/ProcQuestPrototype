@@ -33,9 +33,9 @@ namespace ProceduralQuestTest
             return String.Format("= Node {0} =\n{1}", nodeName, goal.GetString());
         }
 
-        public void CreateExpansionNode()
+        public bool CreateExpansionNode()
         {
-            goal.CreateExpansionNode();
+            return goal.CreateExpansionNode();
         }
     }
 }

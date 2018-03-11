@@ -12,59 +12,44 @@ namespace ProceduralQuestTest
         public QuestNodeTarget reward;
         public QuestNodeGoal condition;
 
-        public QuestInfoPositionLocation location;
-
-        public QuestNodeGoalExchange(QuestNodeTarget reward, QuestNodeGoal condition, QuestNodeTargetPerson rewardGiver)
+        public QuestNodeGoalExchange(QuestNodeTarget reward, QuestNodeGoal condition, QuestNodeTargetPerson rewardGiver) : base()
         {
             this.reward = reward;
             this.condition = condition;
             this.rewardGiver = rewardGiver;
         }
 
-        public QuestNodeGoalExchange() {}
+        public QuestNodeGoalExchange() : base() { }
 
         public override void LateInitialisation()
         {
             if (condition == null)
             {
-                QuestInfoPosition itemLocation;
+                Log.LogMessage("[QuestNodeGoalExchange]: Creating a new condition");
+
+                QuestInfoPosition itemPosition;
 
                 if (PRNG.Bool())
                 {
-                    QuestInfoPositionLocation itemOwnerLocation = new QuestInfoPositionLocation(NameComposer.ComposeName(3, 9));
-                    QuestNodeTargetPerson itemOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", itemOwnerLocation);
-                    itemLocation = new QuestInfoPositionPossessed(itemOwner);
+                    QuestNodeTargetLocation itemOwnerLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
+                    QuestInfoPosition itemOwnerPosition = new QuestInfoPosition(itemOwnerLocation);
+                    QuestNodeTargetPerson itemOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", itemOwnerPosition);
+                    itemPosition = new QuestInfoPosition(itemOwner);
                 }
                 else
                 {
-                    itemLocation = new QuestInfoPositionLocation(NameComposer.ComposeName(3, 9));
+                    QuestNodeTargetLocation itemLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
+                    itemPosition = new QuestInfoPosition(itemLocation);
                 }
 
-                QuestNodeTargetItem conditionItem = new QuestNodeTargetItem("Artifact " + NameComposer.ComposeName(3, 9), itemLocation);
+                QuestNodeTargetItem conditionItem = new QuestNodeTargetItem("Artifact " + NameComposer.ComposeName(3, 9), itemPosition);
 
                 condition = new QuestNodeGoalDeliver(conditionItem, rewardGiver);
 
                 // Merge with the method in QuestNodeGoal later on, to avoid code duplication
                 QuestNode newNode = new QuestNode(parentNode.quest.GetNextNodeName(), condition);
 
-                // --
-                if (parentNode.previousNode != null)
-                {
-                    parentNode.previousNode.nextNode = newNode;
-                    newNode.previousNode = parentNode.previousNode;
-                }
-                else
-                // No previous node means our node was the first, and thus we have to tell Quest there's a new first node
-                {
-                    parentNode.quest.firstNode = newNode;
-                }
-
-                parentNode.previousNode = newNode;
-                newNode.nextNode = parentNode;
-
-                parentNode.quest.AddNode(newNode);
-
-                newNode.goal.LateInitialisation();
+                ConnectNewPrecedingNode(newNode);
             }
         }
 
@@ -73,10 +58,9 @@ namespace ProceduralQuestTest
             return String.Format("COMPLETE GOAL OF NODE\n{0}\nTO RECEIVE\n{1}", condition.parentNode.nodeName, reward.GetString());
         }
 
-        public override bool NewExpansionGoal(out QuestNodeGoal newNodeGoal)
+        public override bool NewExpansionGoal(out QuestNodeGoal expansionGoal)
         {
-            newNodeGoal = new QuestNodeGoalAmbush();
-
+            expansionGoal = null;
             return true;
         }
     }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProceduralQuestTest
 {
-    public abstract class QuestNodeTarget
+    public abstract class QuestNodeTargetPossessable : QuestNodeTarget
     {
-        public abstract string GetString();
-        public abstract string GetStringShort();
+        public QuestInfoPosition position;
     }
 }

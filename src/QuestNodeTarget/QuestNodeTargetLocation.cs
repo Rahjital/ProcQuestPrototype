@@ -6,24 +6,23 @@ using System.Threading.Tasks;
 
 namespace ProceduralQuestTest
 {
-    public class QuestNodeTargetItem : QuestNodeTargetPossessable
+    public class QuestNodeTargetLocation : QuestNodeTarget
     {
         public string name;
 
-        public QuestNodeTargetItem(string name, QuestInfoPosition position)
+        public QuestNodeTargetLocation(string name)
         {
             this.name = name;
-            this.position = position;
         }
 
         public override string GetString()
         {
-            return String.Format("ITEM {0}\n--- position: {1}", name, position.GetString());
+            return String.Format("LOCATION {0}", name);
         }
 
         public override string GetStringShort()
         {
-            return String.Format("ITEM {0} ({1})", name, position.GetString());
+            return String.Format("LOCATION {0}", name);
         }
     }
 }

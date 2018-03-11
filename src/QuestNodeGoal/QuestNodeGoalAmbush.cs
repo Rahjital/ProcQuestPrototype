@@ -10,14 +10,14 @@ namespace ProceduralQuestTest
     {
         public QuestNodeTarget ambusher;
 
-        public QuestNodeGoalAmbush(QuestNodeTarget ambusher)
+        public QuestNodeGoalAmbush(QuestNodeTarget ambusher) : base()
         {
             this.ambusher = ambusher;
         }
 
-        public QuestNodeGoalAmbush()
+        public QuestNodeGoalAmbush() : base()
         {
-            QuestInfoPositionLocation ambusherLocation = new QuestInfoPositionLocation(NameComposer.ComposeName(3, 9));
+            QuestNodeTargetLocation ambusherLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
             QuestNodeTargetPerson ambusher = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "hostile", ambusherLocation);
 
             this.ambusher = ambusher;
@@ -28,11 +28,15 @@ namespace ProceduralQuestTest
             return String.Format("AMBUSH BY\n{0}", ambusher.GetString());
         }
 
-        public override bool NewExpansionGoal(out QuestNodeGoal newNodeGoal)
+        public override bool NewExpansionGoal(out QuestNodeGoal expansionGoal)
         {
-            newNodeGoal = new QuestNodeGoalAmbush();
-
+            expansionGoal = null;
             return true;
+        }
+
+        public override QuestNodeGoal NewGenericExpansionGoal(bool guaranteed = false)
+        {
+            return null;
         }
     }
 }

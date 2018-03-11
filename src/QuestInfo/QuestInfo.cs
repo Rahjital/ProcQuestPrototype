@@ -11,5 +11,6 @@ namespace ProceduralQuestTest
         public string knowledge;
 
         public abstract string GetString();
+        public abstract string GetStringShort();
     }
 }

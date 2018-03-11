@@ -8,9 +8,9 @@ namespace ProceduralQuestTest
 {
     public class QuestNodeGoalGet : QuestNodeGoal
     {
-        public QuestNodeTargetItem target;
+        public QuestNodeTargetPossessable target;
 
-        public QuestNodeGoalGet(QuestNodeTargetItem target)
+        public QuestNodeGoalGet(QuestNodeTargetPossessable target) : base()
         {
             this.target = target;
         }
@@ -20,35 +20,54 @@ namespace ProceduralQuestTest
             return String.Format("GET\n{0}", target.GetString());
         }
 
-        public override bool NewExpansionGoal(out QuestNodeGoal newNodeGoal)
+        public override bool NewExpansionGoal(out QuestNodeGoal expansionGoal)
         {
-            QuestNodeGoalExchange newExchangeGoal = new QuestNodeGoalExchange();
-
-            newExchangeGoal.reward = target;
-
-            if (target.position is QuestInfoPositionPossessed)
+            if (PRNG.Bool() && target.position.knowledge == "known")
             {
-                QuestInfoPositionPossessed ownerInfo = (QuestInfoPositionPossessed)target.position;
+                QuestNodeTargetLocation informationHolderLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
+                QuestNodeTargetPerson informationHolder = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", informationHolderLocation);
+                QuestInfoPosition informationPosition = new QuestInfoPosition(informationHolder);
 
-                newExchangeGoal.rewardGiver = ownerInfo.owner;
-            }
-            else if (target.position is QuestInfoPositionLocation)
-            {
-                QuestNodeTargetPerson newOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", (QuestInfoPositionLocation)target.position);
+                QuestNodeTargetInformation targetInfo = new QuestNodeTargetInformation(target.position, target, informationPosition);
+
+                target.position.knowledge = "unknown";
+
+                expansionGoal = new QuestNodeGoalGet(targetInfo);
+
+                return true;
             }
             else
             {
-                throw new ArgumentException("QuestNodeGoalGet NewExpansionGoal - unknown QuestInfoPosition type");
+                QuestNodeGoalExchange newExchangeGoal = new QuestNodeGoalExchange();
+
+                newExchangeGoal.reward = target;
+
+                if (target.position.target is QuestNodeTargetPerson)
+                {
+                    newExchangeGoal.rewardGiver = (QuestNodeTargetPerson)target.position.target;
+                }
+                else if (target.position.target is QuestNodeTargetLocation)
+                {
+                    string oldPositionKnowledge = target.position.knowledge;
+
+                    newExchangeGoal.rewardGiver = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", (QuestNodeTargetLocation)target.position.target);
+                    target.position = new QuestInfoPosition(newExchangeGoal.rewardGiver);
+                    target.position.knowledge = oldPositionKnowledge;
+                }
+                else
+                {
+                    throw new ArgumentException("QuestNodeGoalGet NewExpansionGoal - unknown QuestInfoPosition type");
+                }
+
+                parentNode.goal = newExchangeGoal;
+                newExchangeGoal.parentNode = parentNode;
+
+                newExchangeGoal.LateInitialisation();
+
+                expansionGoal = null;
+
+                return false;
             }
-
-            newNodeGoal = newExchangeGoal;
-
-            parentNode.goal = newNodeGoal;
-            newNodeGoal.parentNode = parentNode;
-
-            newNodeGoal.LateInitialisation();
-
-            return false;
         }
     }
 }
