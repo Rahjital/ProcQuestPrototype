@@ -9,7 +9,7 @@ namespace ProceduralQuestTest
 {
     public static class Log
     {
-        public static StreamWriter streamWriter;
+        private static StreamWriter streamWriter;
 
         public static void LogMessage(string message)
         {

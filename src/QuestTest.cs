@@ -45,55 +45,62 @@ namespace ProceduralQuestTest
     // - replace self -
 
     // -----
-    class QuestGen
+    class QuestTest
     {
         static void Main(string[] args)
         {
-            Log.LogMessage("Starting quest generation");
-
-            Quest quest = new Quest();
-
-            // TWO BASIC NODES STARTING HERE
-            QuestNodeTargetLocation itemOwnerLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
-            QuestNodeTargetPerson itemOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", itemOwnerLocation);
-
-            QuestInfoPosition itemLocation = new QuestInfoPosition(itemOwner);
-            QuestNodeTargetItem getItemTarget = new QuestNodeTargetItem("Dancing Dragon sword", itemLocation);
-            QuestNodeGoalGet getItemGoal = new QuestNodeGoalGet(getItemTarget);
-            QuestNode getItemNode = new QuestNode("startNode", getItemGoal);
-
-            quest.AddNode(getItemNode);
-
-            QuestNodeTargetLocation questGiverLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
-            QuestNodeTargetPerson questGiverPerson = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "friendly", questGiverLocation);
-            questGiverPerson.position.knowledge = "known_always";
-
-            QuestNodeGoalDeliver giveItemGoal = new QuestNodeGoalDeliver(getItemTarget, questGiverPerson);
-            QuestNode deliverItemNode = new QuestNode("endNode", giveItemGoal);
-
-            getItemNode.nextNode = deliverItemNode;
-            deliverItemNode.previousNode = getItemNode;
-            quest.AddNode(deliverItemNode);
-            // TWO BASIC NODES ENDING HERE
-
-            //deliverItemNode.CreateExpansionNode();
-            getItemNode.CreateExpansionNode();
-
-            for (int i = 0; i < 10; i++)
+            try
             {
-                quest.ExpandRandomNode();
-            }
+                Log.LogMessage("Starting quest generation");
 
-            using (StreamWriter stream = new StreamWriter("questTest.txt"))
+                Quest quest = new Quest();
+
+                // TWO BASIC NODES STARTING HERE
+                QuestNodeTargetLocation itemOwnerLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
+                QuestNodeTargetPerson itemOwner = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "neutral", itemOwnerLocation);
+
+                QuestInfoPosition itemLocation = new QuestInfoPosition(itemOwner);
+                QuestNodeTargetItem getItemTarget = new QuestNodeTargetItem("Dancing Dragon sword", itemLocation);
+                QuestNodeGoalGet getItemGoal = new QuestNodeGoalGet(getItemTarget);
+                QuestNode getItemNode = new QuestNode("startNode", getItemGoal);
+
+                quest.AddNode(getItemNode);
+
+                QuestNodeTargetLocation questGiverLocation = new QuestNodeTargetLocation(NameComposer.ComposeName(3, 9));
+                QuestNodeTargetPerson questGiverPerson = new QuestNodeTargetPerson(NameComposer.ComposeName(3, 9), "friendly", questGiverLocation);
+                questGiverPerson.position.knowledge = "known_always";
+
+                QuestNodeGoalDeliver giveItemGoal = new QuestNodeGoalDeliver(getItemTarget, questGiverPerson);
+                QuestNode deliverItemNode = new QuestNode("endNode", giveItemGoal);
+
+                getItemNode.nextNode = deliverItemNode;
+                deliverItemNode.previousNode = getItemNode;
+                quest.AddNode(deliverItemNode);
+                // TWO BASIC NODES ENDING HERE
+
+                //deliverItemNode.CreateExpansionNode();
+                getItemNode.CreateExpansionNode();
+
+                for (int i = 0; i < 10; i++)
+                {
+                    quest.ExpandRandomNode();
+                }
+
+                using (StreamWriter stream = new StreamWriter("questTest.txt"))
+                {
+                    stream.WriteLine("Procedural quest test");
+                    stream.Write(quest.GetString());
+                }
+
+                Log.LogMessage("Quest generation done");
+                Log.LogMessage(String.Format("Quest nodes generated: {0}", quest.nodes.Count));
+
+                ConceptLoader.LoadConcepts();
+            }
+            catch (Exception exception)
             {
-                stream.AutoFlush = true;
-
-                stream.WriteLine("Procedural quest test");
-                stream.Write(quest.GetString());
+                Log.LogMessage(exception.ToString());
             }
-
-            Log.LogMessage("Quest generation done");
-            Log.LogMessage(String.Format("Quest nodes generated: {0}", quest.nodes.Count));
         }
     }
 }

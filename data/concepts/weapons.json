@@ -1,0 +1,13 @@
+{
+	"noun": "sword",
+	"categories": ["weapon"]
+}
+{
+	"noun": "axe",
+	"categories": ["weapon"]
+}
+{
+	"noun": "club",
+	"nounDeverbal": "clubbing",
+	"categories": ["weapon"]
+}
