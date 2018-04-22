@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\LanguageGen\LanguageRules.cs" />
+    <Compile Include="src\LanguageGen\Language.cs" />
+    <Compile Include="src\LanguageGen\MorphemeGenerator.cs" />
     <Compile Include="src\Log.cs" />
     <Compile Include="src\QuestGen\QuestInfo\QuestInfoPosition.cs" />
     <Compile Include="src\QuestGen\QuestNodeGoal\QuestNodeGoalAmbush.cs" />

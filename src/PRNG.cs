@@ -29,5 +29,42 @@ namespace ProceduralQuestTest
         {
             return random.NextDouble() >= 0.5;
         }
+
+        public static T SelectRandom<T>(T[] array)
+        {
+            return array[PRNG.Int(array.Length)];
+        }
+
+        public static T SelectRandom<T>(List<T> list)
+        {
+            return list[PRNG.Int(list.Count)];
+        }
+
+        public static T SelectRandomByWeight<T>(IEnumerable<T> enumerable, Func<T, int> weightSelector)
+        {
+            int totalWeight = 0;
+
+            foreach (T element in enumerable)
+            {
+                totalWeight += weightSelector(element);
+            }
+
+            int currentWeight = 0;
+            int targetWeight = (int)Math.Round(totalWeight * PRNG.Double());
+
+            //Log.LogMessage(String.Format("SelectRandomByWeight: Selecting weight {0} from total of {1}", targetWeight, totalWeight));
+
+            foreach (T element in enumerable)
+            {
+                currentWeight += weightSelector(element);
+
+                if (currentWeight > targetWeight)
+                {
+                    return element;
+                }
+            }
+
+            return enumerable.Last();
+        }
     }
 }
